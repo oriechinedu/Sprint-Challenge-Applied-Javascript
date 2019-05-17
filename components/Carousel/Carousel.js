@@ -5,6 +5,7 @@ class Carousel {
         this.imageCount = this.images.length;
         this.currentImage = 0;
         this.initCarousel()
+        this.autoShowCarousel()
     }
     initCarousel = () => {
         this.setImage(this.currentImage)
@@ -32,12 +33,22 @@ class Carousel {
     }
 
     setImage = (index) => {
-        
         Array.from(this.images).forEach(img => {
             img.style.display = 'none';
+            TweenMax.to(img, .2, {width: 0, display: "none"});
         });
         const currentImage = Array.from(this.images)[index];
-        TweenMax.fromTo(currentImage, 1, {width: 0}, {width: "100%", display: "block"});
+        TweenMax.to(currentImage, 1,{width: "100%", display: "block"});
+    }
+    autoShowCarousel = () => {
+        setInterval( () => {
+            if (this.currentImage === this.imageCount - 1) {
+                this.currentImage = 0;
+            } else {
+                ++this.currentImage
+            }
+            this.setImage(this.currentImage)
+        }, 3000) 
     }
 }
 
